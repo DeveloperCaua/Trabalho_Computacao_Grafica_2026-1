@@ -44,3 +44,13 @@ void transformaObj(int **tela, Objeto *obj) {
         ndcToViewport(tela, P1x_m, P1y_m, P2x_m, P2y_m);
     }
 }
+
+void desalocaObjeto(Objeto *obj) {
+    if (obj) {
+        for (int i = 0; i < obj->n; i++) {
+            free(obj->vertices[i]);
+        }
+        free(obj->vertices);
+        free(obj);
+    }
+}

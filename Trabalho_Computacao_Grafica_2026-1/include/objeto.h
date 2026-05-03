@@ -2,11 +2,11 @@
 #define OBJETO_H
 
 typedef struct {
-    int n;             // Número de vértices
-    float **vertices;  // Matriz [n][2] (SCO)
-    float tx, ty;      // Translação
-    float sx, sy;      // Escala
-    float theta;       // Rotação (radianos)
+    int n;
+    float **vertices;
+    float tx, ty;
+    float sx, sy;
+    float theta;
 } Objeto;
 
 Objeto* carregarArquivo(const char* nomeArquivo);

@@ -27,7 +27,6 @@ void ndcToViewport(int **tela, float x1, float y1, float x2, float y2) {
     desenhaLinha(tela, xa, ya, xb, yb);
 }
 
-// --- Funções da Tela (Inalteradas) ---
 int **criaTela(int larg, int alt) {
     int **tela, i, j;
     tela = (int **) malloc(alt * sizeof(int *));
