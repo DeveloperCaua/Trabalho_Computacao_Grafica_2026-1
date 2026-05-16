@@ -10,9 +10,9 @@ int main(void) {
     Objeto *objetos[NUM_OBJETOS];
     int selecionado = 0;
 
-    objetos[0] = carregarArquivo("casaNDC.dcg");
-    objetos[1] = carregarArquivo("estrelaNDC.dcg"); 
-    objetos[2] = carregarArquivo("trianguloNDC.dcg");
+    objetos[0] = carregarArquivo("data/casaNDC.dcg");
+    objetos[1] = carregarArquivo("data/estrelaNDC.dcg"); 
+    objetos[2] = carregarArquivo("data/trianguloNDC.dcg");
 
     for (int i = 0; i < NUM_OBJETOS; i++) {
         if (!objetos[i]) {
