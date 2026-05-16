@@ -27,11 +27,11 @@ Repositório com as implementações realizadas para a entrega 01 da disciplina 
 
 Instruções  para compilar com :
 
-Existe um `Makefile` pronto dentro da pasta do exercício. Para usá-lo, abra um terminal na raiz do projeto onde estão as pastas `src/` e `include/`. No layout atual do repositório o `Makefile` está em `Trabalho_Computacao_Grafica_2026-1/Trabalho_Computacao_Grafica_2026-1/Makefile` — siga os comandos abaixo a partir da pasta que contém esse `Makefile`:
+Existe um `Makefile` pronto dentro da pasta do exercício. Para usá-lo, abra um terminal na raiz do projeto onde estão as pastas `src/` e `include/`. No layout atual do repositório o `Makefile` está na raiz do projeto — siga os comandos abaixo a partir da pasta que contém esse `Makefile`:
 
 ```sh
 # entrar na pasta onde está o Makefile
-cd Trabalho_Computacao_Grafica_2026-1/Trabalho_Computacao_Grafica_2026-1
+cd Trabalho_Computacao_Grafica_2026-1
 
 # compilar (gera bin/trabalho_cg)
 make
