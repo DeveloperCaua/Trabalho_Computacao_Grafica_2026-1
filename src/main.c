@@ -72,6 +72,14 @@ int main( int argc, char * argv[] ){
 
     SDL_Event windowEvent;
 
+    /* Controles do programa:
+     - W / S : mover objeto para frente / trás (eixo Z)
+     - A / D : mover objeto para esquerda / direita (eixo X)
+     - R / F : mover objeto para cima / baixo (eixo Y)
+     - Setas: rotacionar objeto (Up/Down -> rot X, Left/Right -> rot Y)
+     - Q / E : diminuir / aumentar escala do objeto
+    */
+
     while(1){
         if( SDL_PollEvent(&windowEvent)){
             if(windowEvent.type == SDL_QUIT){
@@ -84,6 +92,8 @@ int main( int argc, char * argv[] ){
                     case SDLK_s: transladaObjeto(obj, 0.0f, 0.0f, transStep); break;
                     case SDLK_a: transladaObjeto(obj, -transStep, 0.0f, 0.0f); break;
                     case SDLK_d: transladaObjeto(obj, transStep, 0.0f, 0.0f); break;
+                    case SDLK_r: transladaObjeto(obj, 0.0f, transStep, 0.0f); break;
+                    case SDLK_f: transladaObjeto(obj, 0.0f, -transStep, 0.0f); break;
                     case SDLK_UP: rotacionaObjetoEixoX(obj, -rotStep); break;
                     case SDLK_DOWN: rotacionaObjetoEixoX(obj, rotStep); break;
                     case SDLK_LEFT: rotacionaObjetoEixoY(obj, -rotStep); break;
