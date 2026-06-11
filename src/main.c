@@ -7,13 +7,31 @@
 #include <stdlib.h>
 #include <math.h>
 
-// Modo de controle
+/*
+* Controles:
+*   TAB                 : alternar entre modo CAMERA e modo OBJETO
+*
+*   === Modo CAMERA ===
+*   W / S               : mover camera para frente / tras (eixo Z)
+*   A / D               : mover camera para esquerda / direita (eixo X)
+*   R / F               : mover camera para cima / baixo (eixo Y)
+*   Setas Cima/Baixo    : rotacionar camera em torno de X
+*   Setas Esq/Dir       : rotacionar camera em torno de Y
+*
+*   === Modo OBJETO (cubo da esquerda - obj1) ===
+*   W / S               : mover objeto no eixo Z
+*   A / D               : mover objeto no eixo X
+*   R / F               : mover objeto no eixo Y
+*   Seta Cima/Baixo     : rotacionar objeto eixo X
+*   Seta Esq/Dir        : rotacionar objeto eixo Y
+*   Q / E               : diminuir / aumentar escala
+*/
+
 typedef enum {
-    MODO_CAMERA,    // WASD/setas movem a camera
-    MODO_OBJETO     // WASD/setas movem o objeto selecionado
+    MODO_CAMERA,
+    MODO_OBJETO 
 } tModoControle;
 
-// Desenha um objeto na tela usando projecao em perspectiva
 void desenhaObjetoTela(SDL_Renderer *renderer, tCamera3d *cam, tObjeto3d *objeto){
     if(!objeto || !cam) return;
 
@@ -30,7 +48,6 @@ void desenhaObjetoTela(SDL_Renderer *renderer, tCamera3d *cam, tObjeto3d *objeto
         float *pA_cam = multMatriz4dPonto(cam->viewMatrix, pA_world);
         float *pB_cam = multMatriz4dPonto(cam->viewMatrix, pB_world);
 
-        // Rejeita pontos atras da camera
         if(pA_cam[2] >= 0 || pB_cam[2] >= 0){
             free(pA_world); free(pB_world); free(pA_cam); free(pB_cam);
             continue;
@@ -50,7 +67,6 @@ void desenhaObjetoTela(SDL_Renderer *renderer, tCamera3d *cam, tObjeto3d *objeto
     }
 }
 
-// Atualiza o titulo da janela de acordo com o modo atual e objeto selecionado
 void atualizaTitulo(SDL_Window *window, tModoControle modo, int objSelecionado){
     char titulo[128];
     if(modo == MODO_CAMERA)
@@ -75,7 +91,6 @@ int main( int argc, char * argv[] ){
 
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, 0);
 
-    // Carregar dois cubos
     tObjeto3d *obj1 = carregaObjeto("data/cubo.dcg");
     tObjeto3d *obj2 = carregaObjeto("data/cubo2.dcg");
 
@@ -84,46 +99,24 @@ int main( int argc, char * argv[] ){
         return EXIT_FAILURE;
     }
 
-    // Posicionar cubo1 a esquerda e cubo2 a direita
     transladaObjeto(obj1, -15.0f, 0.0f, 0.0f);
     transladaObjeto(obj2,  15.0f, 0.0f, 0.0f);
 
-    // Criar camera e posiciona-la um pouco afastada
     tCamera3d *cam = criaCamera();
     float camX = 0.0f, camY = 0.0f, camZ = 60.0f;
-    defineCamera(cam, camX, camY, camZ,  0.0f, 0.0f, 0.0f,  0.0f, 1.0f, 0.0f);
+    float camUpX = 0.0f, camUpY = 1.0f, camUpZ = 0.0f;
+    defineCamera(cam, camX, camY, camZ,  0.0f, 0.0f, 0.0f,  camUpX, camUpY, camUpZ);
 
-    // Controles
     const float transStep  = 2.0f;
-    const float rotStep    = 5.0f;  // graus
+    const float rotStep    = 5.0f;
     const float scaleStep  = 0.1f;
     const float camStep    = 3.0f;
 
     tModoControle modo = MODO_CAMERA;
-    int objSelecionado = 1;  // 1 ou 2
+    int objSelecionado = 1;
     atualizaTitulo(window, modo, objSelecionado);
 
     SDL_Event windowEvent;
-
-    /*
-     * Controles:
-     *   TAB           : alternar entre modo CAMERA e modo OBJETO
-     *
-     *   === Modo CAMERA ===
-     *   W / S         : mover camera para frente / tras (eixo Z)
-     *   A / D         : mover camera para esquerda / direita (eixo X)
-     *   R / F         : mover camera para cima / baixo (eixo Y)
-     *   Setas Cima/Baixo    : rotacionar camera em torno de X
-     *   Setas Esq/Dir       : rotacionar camera em torno de Y
-     *
-     *   === Modo OBJETO (cubo da esquerda - obj1) ===
-     *   W / S         : mover objeto no eixo Z
-     *   A / D         : mover objeto no eixo X
-     *   R / F         : mover objeto no eixo Y
-     *   Seta Cima/Baixo     : rotacionar objeto eixo X
-     *   Seta Esq/Dir        : rotacionar objeto eixo Y
-     *   Q / E         : diminuir / aumentar escala
-     */
 
     while(1){
         if( SDL_PollEvent(&windowEvent)){
@@ -133,17 +126,15 @@ int main( int argc, char * argv[] ){
             if(windowEvent.type == SDL_KEYDOWN){
                 SDL_Keycode k = windowEvent.key.keysym.sym;
 
-                // Alternancia de modo
                 if(k == SDLK_TAB){
                     modo = (modo == MODO_CAMERA) ? MODO_OBJETO : MODO_CAMERA;
                     atualizaTitulo(window, modo, objSelecionado);
                 }
-                // Selecao de cubo (so faz sentido no modo OBJETO)
+               
                 if(k == SDLK_1){ objSelecionado = 1; atualizaTitulo(window, modo, objSelecionado); }
                 if(k == SDLK_2){ objSelecionado = 2; atualizaTitulo(window, modo, objSelecionado); }
 
                 if(modo == MODO_CAMERA){
-                    // Mover a camera - recalcula viewMatrix com a nova posicao/foco
                     if(k == SDLK_w){ camZ -= camStep; }
                     if(k == SDLK_s){ camZ += camStep; }
                     if(k == SDLK_a){ camX -= camStep; }
@@ -151,11 +142,7 @@ int main( int argc, char * argv[] ){
                     if(k == SDLK_r){ camY += camStep; }
                     if(k == SDLK_f){ camY -= camStep; }
 
-                    // Rotacao da camera: rotacionar o ponto de visao em torno da posicao
                     if(k == SDLK_UP    || k == SDLK_DOWN || k == SDLK_LEFT || k == SDLK_RIGHT){
-                        // Orbita a camera em torno da origem
-                        // Para simplificar: muda o vetor de visao (foco fixo em 0,0,0)
-                        // usando rotacao da posicao da camera ao redor da origem
                         float r;
                         float cx = camX, cy = camY, cz = camZ;
                         float dist = sqrtf(cx*cx + cy*cy + cz*cz);
@@ -165,32 +152,42 @@ int main( int argc, char * argv[] ){
                             r = rotStep * (float)M_PI / 180.0f;
                             float nx = cx * cosf(r) - cz * sinf(r);
                             float nz = cx * sinf(r) + cz * cosf(r);
+                            float nUpX = camUpX * cosf(r) - camUpZ * sinf(r);
+                            float nUpZ = camUpX * sinf(r) + camUpZ * cosf(r);
                             camX = nx; camZ = nz;
+                            camUpX = nUpX; camUpZ = nUpZ;
                         }
                         if(k == SDLK_RIGHT){
                             r = -rotStep * (float)M_PI / 180.0f;
                             float nx = cx * cosf(r) - cz * sinf(r);
                             float nz = cx * sinf(r) + cz * cosf(r);
+                            float nUpX = camUpX * cosf(r) - camUpZ * sinf(r);
+                            float nUpZ = camUpX * sinf(r) + camUpZ * cosf(r);
                             camX = nx; camZ = nz;
+                            camUpX = nUpX; camUpZ = nUpZ;
                         }
                         if(k == SDLK_UP){
                             r = rotStep * (float)M_PI / 180.0f;
                             float ny = cy * cosf(r) - cz * sinf(r);
                             float nz = cy * sinf(r) + cz * cosf(r);
+                            float nUpY = camUpY * cosf(r) - camUpZ * sinf(r);
+                            float nUpZ = camUpY * sinf(r) + camUpZ * cosf(r);
                             camY = ny; camZ = nz;
+                            camUpY = nUpY; camUpZ = nUpZ;
                         }
                         if(k == SDLK_DOWN){
                             r = -rotStep * (float)M_PI / 180.0f;
                             float ny = cy * cosf(r) - cz * sinf(r);
                             float nz = cy * sinf(r) + cz * cosf(r);
+                            float nUpY = camUpY * cosf(r) - camUpZ * sinf(r);
+                            float nUpZ = camUpY * sinf(r) + camUpZ * cosf(r);
                             camY = ny; camZ = nz;
+                            camUpY = nUpY; camUpZ = nUpZ;
                         }
                     }
-                    // Recalcula viewMatrix com a nova posicao da camera, sempre olhando para a origem
-                    defineCamera(cam, camX, camY, camZ,  0.0f, 0.0f, 0.0f,  0.0f, 1.0f, 0.0f);
+                    defineCamera(cam, camX, camY, camZ,  0.0f, 0.0f, 0.0f,  camUpX, camUpY, camUpZ);
 
                 } else {
-                    // Modo OBJETO: transforma o cubo selecionado
                     tObjeto3d *obj = (objSelecionado == 1) ? obj1 : obj2;
                     switch(k){
                         case SDLK_w: transladaObjeto(obj, 0.0f, 0.0f, -transStep); break;
@@ -213,11 +210,9 @@ int main( int argc, char * argv[] ){
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
 
-        // Desenha cubo 1 em amarelo
         SDL_SetRenderDrawColor(renderer, 255, 220, 50, 255);
         if(obj1) desenhaObjetoTela(renderer, cam, obj1);
 
-        // Desenha cubo 2 em ciano
         SDL_SetRenderDrawColor(renderer, 50, 200, 255, 255);
         if(obj2) desenhaObjetoTela(renderer, cam, obj2);
 
