@@ -28,7 +28,6 @@ tObjeto3d *carregaObjeto(char *nomeArquivo){
 	}
 
 	if(fscanf(f, "%d", &obj->nArestas) != 1){
-		// try to continue, but set zero
 		obj->nArestas = 0;
 	}
 	obj->arestas = (int**) malloc(sizeof(int*) * obj->nArestas);

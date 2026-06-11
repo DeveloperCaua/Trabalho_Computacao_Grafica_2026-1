@@ -26,13 +26,11 @@ void defineCamera(tCamera3d *camera, float posX, float posY, float posZ, float f
 	float vx,vy,vz;
 	float wx,wy,wz;
 
-	// w = normalize(pos - foco)
 	wx = posX - focX; wy = posY - focY; wz = posZ - focZ;
 	float wn = sqrtf(wx*wx + wy*wy + wz*wz);
 	if(wn == 0) wn = 1.0f;
 	wx /= wn; wy /= wn; wz /= wn;
 
-	// u = normalize(cima x w)
 	ux = camera->cima[1]*wz - camera->cima[2]*wy;
 	uy = camera->cima[2]*wx - camera->cima[0]*wz;
 	uz = camera->cima[0]*wy - camera->cima[1]*wx;
@@ -40,12 +38,10 @@ void defineCamera(tCamera3d *camera, float posX, float posY, float posZ, float f
 	if(un == 0) un = 1.0f;
 	ux /= un; uy /= un; uz /= un;
 
-	// v = w x u
 	vx = wy*uz - wz*uy;
 	vy = wz*ux - wx*uz;
 	vz = wx*uy - wy*ux;
 
-	// montar matriz view (linha-major)
 	camera->viewMatrix[0][0] = ux; camera->viewMatrix[0][1] = uy; camera->viewMatrix[0][2] = uz;
 	camera->viewMatrix[0][3] = -(ux*posX + uy*posY + uz*posZ);
 

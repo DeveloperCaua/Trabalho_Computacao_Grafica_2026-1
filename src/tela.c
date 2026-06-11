@@ -2,7 +2,7 @@
 #include <SDL2/SDL.h>
 #include "tela.h"
 
-//Aloca a tela utilizando o título passado como parâmetro e as largura e altura definidas no tela.h
+//Aloca a tela utilizando o tï¿½tulo passado como parï¿½metro e as largura e altura definidas no tela.h
 SDL_Window *criaTela(char *titulo){
     return SDL_CreateWindow( titulo, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, SDL_WINDOW_ALLOW_HIGHDPI);
 }
