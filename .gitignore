@@ -1,0 +1,12 @@
+# Binários compilados
+*.exe
+*.o
+
+# Pasta de objetos intermediários
+obj/
+
+# DLL copiada na raiz pelo Makefile (ela já está dentro do SDL2-2.30.3)
+SDL2.dll
+
+# Pasta completa do SDL2 (biblioteca externa, não versionar)
+SDL2-2.30.3/
