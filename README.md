@@ -35,8 +35,26 @@ xcopy /E /Y "SDL2-2.30.3\i686-w64-mingw32\include\" "C:\MinGW\include\"
 xcopy /E /Y "SDL2-2.30.3\i686-w64-mingw32\lib\"     "C:\MinGW\lib\"
 ```
 
-> ⚠️ Ajuste `C:\MinGW\` para o caminho correto da **sua** instalação do MinGW.  
-> O `SDL2.dll` (de `SDL2-2.30.3\i686-w64-mingw32\bin\SDL2.dll`) também precisa estar acessível — o Makefile já cuida de copiá-lo automaticamente para a raiz do projeto na compilação.
+> ⚠️ Ajuste `C:\MinGW\` para o caminho correto da **sua** instalação do MinGW.
+
+> **Obs. sobre a `SDL2.dll`:** o `Makefile` tenta copiar a `SDL2.dll` a partir do caminho configurado internamente (`SDL2-2.30.3/i686-w64-mingw32/bin/SDL2.dll`). Se você extraiu o pacote em outro local ou em outra arquitetura (ex.: `x86_64`), a cópia será *pulada* e o `make` continuará — nesse caso copie a DLL manualmente para a raiz do projeto ou informe o caminho no comando `make`:
+>
+> - Copiar manualmente (MSYS/Git Bash):
+> ```bash
+> cp /c/caminho/para/SDL2-2.30.3/i686-w64-mingw32/bin/SDL2.dll .
+> ```
+>
+> - Copiar manualmente (CMD/PowerShell):
+> ```powershell
+> copy "C:\caminho\para\SDL2-2.30.3\i686-w64-mingw32\bin\SDL2.dll" .
+> ```
+>
+> - Ou sobrescrever o caminho só para essa invocação do `make`:
+> ```bash
+> make SDL_DLL_PATH=/c/caminho/SDL2-2.30.3/i686-w64-mingw32/bin/SDL2.dll
+> ```
+>
+> Use a DLL correspondente à arquitetura do seu compilador (i686 = 32-bit, x86_64 = 64-bit). A falta da DLL impede o programa de iniciar no Windows.
 
 ---
 
