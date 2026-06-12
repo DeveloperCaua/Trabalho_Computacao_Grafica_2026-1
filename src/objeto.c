@@ -5,6 +5,7 @@
 #include <SDL2/SDL.h>
 #include "objeto.h"
 #include "algebra.h"
+#define PI 3.14159265358979323846f
 
 //L� as informa��es de um arquivo e as carrega num novo objeto alocado
 tObjeto3d *carregaObjeto(char *nomeArquivo){
@@ -85,7 +86,7 @@ void transladaObjeto(tObjeto3d *objeto, float transX, float transY, float transZ
 
 //Altera a modelMatrix de um objeto para rotaciona-lo ao redor do eixo X segundo o angulo informado
 void rotacionaObjetoEixoX(tObjeto3d *objeto, float angulo){
-	float r = angulo * M_PI / 180.0f;
+	float r = angulo * PI / 180.0f;
 	float **R = (float**) malloc(sizeof(float*)*4);
 	for(int i = 0; i <4; i++) R[i] = (float*) malloc(sizeof(float)*4);
 	criaIdentidade4d(R);
@@ -101,7 +102,7 @@ void rotacionaObjetoEixoX(tObjeto3d *objeto, float angulo){
 
 //Altera a modelMatrix de um objeto para rotaciona-lo ao redor do eixo Y segundo o angulo informado
 void rotacionaObjetoEixoY(tObjeto3d *objeto, float angulo){
-	float r = angulo * M_PI / 180.0f;
+	float r = angulo * PI / 180.0f;
 	float **R = (float**) malloc(sizeof(float*)*4);
 	for(int i = 0; i <4; i++) R[i] = (float*) malloc(sizeof(float)*4);
 	criaIdentidade4d(R);
@@ -117,7 +118,7 @@ void rotacionaObjetoEixoY(tObjeto3d *objeto, float angulo){
 
 //Altera a modelMatrix de um objeto para rotaciona-lo ao redor do eixo Z segundo o angulo informado
 void rotacionaObjetoEixoZ(tObjeto3d *objeto, float angulo){
-	float r = angulo * M_PI / 180.0f;
+	float r = angulo * PI / 180.0f;
 	float **R = (float**) malloc(sizeof(float*)*4);
 	for(int i = 0; i <4; i++) R[i] = (float*) malloc(sizeof(float)*4);
 	criaIdentidade4d(R);

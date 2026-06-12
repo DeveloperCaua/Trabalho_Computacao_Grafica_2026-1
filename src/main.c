@@ -6,6 +6,7 @@
 #include "camera.h"
 #include <stdlib.h>
 #include <math.h>
+#define PI 3.14159265358979323846f
 
 /*
 * Controles:
@@ -149,7 +150,7 @@ int main( int argc, char * argv[] ){
                         if(dist == 0.0f) dist = 1.0f;
 
                         if(k == SDLK_LEFT){
-                            r = rotStep * (float)M_PI / 180.0f;
+                            r = rotStep * PI / 180.0f;
                             float nx = cx * cosf(r) - cz * sinf(r);
                             float nz = cx * sinf(r) + cz * cosf(r);
                             float nUpX = camUpX * cosf(r) - camUpZ * sinf(r);
@@ -158,7 +159,7 @@ int main( int argc, char * argv[] ){
                             camUpX = nUpX; camUpZ = nUpZ;
                         }
                         if(k == SDLK_RIGHT){
-                            r = -rotStep * (float)M_PI / 180.0f;
+                            r = -rotStep * PI / 180.0f;
                             float nx = cx * cosf(r) - cz * sinf(r);
                             float nz = cx * sinf(r) + cz * cosf(r);
                             float nUpX = camUpX * cosf(r) - camUpZ * sinf(r);
@@ -167,7 +168,7 @@ int main( int argc, char * argv[] ){
                             camUpX = nUpX; camUpZ = nUpZ;
                         }
                         if(k == SDLK_UP){
-                            r = rotStep * (float)M_PI / 180.0f;
+                            r = rotStep * PI / 180.0f;
                             float ny = cy * cosf(r) - cz * sinf(r);
                             float nz = cy * sinf(r) + cz * cosf(r);
                             float nUpY = camUpY * cosf(r) - camUpZ * sinf(r);
@@ -176,7 +177,7 @@ int main( int argc, char * argv[] ){
                             camUpY = nUpY; camUpZ = nUpZ;
                         }
                         if(k == SDLK_DOWN){
-                            r = -rotStep * (float)M_PI / 180.0f;
+                            r = -rotStep * PI / 180.0f;
                             float ny = cy * cosf(r) - cz * sinf(r);
                             float nz = cy * sinf(r) + cz * cosf(r);
                             float nUpY = camUpY * cosf(r) - camUpZ * sinf(r);
